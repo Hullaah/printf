@@ -2,5 +2,5 @@
 
 int main(void)
 {
-        printf("%#0''10d", 95467);
+        printf("%##o", 95467);
 }

@@ -33,6 +33,7 @@ int _printf(char *format, ...)
 			return (print_buf(buf));
 		}
 		i++;
+                write_count = get_flags(format, buf, &i, write_count);
 		switch (format[i])
 		{
 		case 's':

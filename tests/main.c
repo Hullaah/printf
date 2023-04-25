@@ -80,5 +80,14 @@ int main(void)
 	j = printf("The addresses of all these variables are:\n\ts: %p\n\tc: %p\n\ti: %p\n", s, &c, &i);
         printf("%d\n", j);
 
+        j = _printf("%#x\n%#o\n%#d\n%#X\n", 8192, 8192, 8192, 8192);
+        _printf("%d\n", j);
+        j = printf("\n%#x\n%#o\n%#d\n%#X\n", 8192, 8192, 8192, 8192);
+        printf("%d\n", j);
+
+        /*_printf("\n%d\n%x\n%o\n%X\n", 8192);
+        printf("\n%d\n%x\n%o\n%X\n", 8192);*/
+
+
 	return (0);
 }
