@@ -89,6 +89,16 @@ int main(void)
         _printf("%+d\n%+%, %+i %+x\n%+X\n", 9830, 930,292, 8191);
         printf("%i\n", 8920);
 
+        printf("%u\n", UINT_MAX);
+        printf("%x\n", UINT_MAX);
+        printf("%hx\n", UINT_MAX);
+        printf("%hx\n", -1234);
+        printf("%hu\n", -1234);
+
+        _printf("%r\n", "Hello, World");
+        _printf("%R\n", s);
+
+
 
         /*_printf("\n%d\n%x\n%o\n%X\n", 8192);
         printf("\n%d\n%x\n%o\n%X\n", 8192);*/

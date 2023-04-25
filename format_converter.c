@@ -6,8 +6,7 @@
 */
 int print_string(char *str, char c, char buf[BUFFER], int start)
 {
-	int i;
-	int power;
+	int i, j, power;
 	char d;
 
 	if (c == 's')
@@ -18,7 +17,7 @@ int print_string(char *str, char c, char buf[BUFFER], int start)
 			buf[start + i] = str[i];
 		}
 	}
-	else
+	else if (c == 'S')
 	{
 		for (i = 0; str[i] != '\0'; i++)
 		{
@@ -41,6 +40,35 @@ int print_string(char *str, char c, char buf[BUFFER], int start)
 				buf[start + i] = str[i];
 		}
 	}
+	else if (c == 'r')
+	{
+		for (i = 0; str[i] != '\0'; i++);
+		for (j = i - 1; j >= 0; j--)
+		{
+			buf[start + i - j - 1] = str[j];
+		}
+		
+	}
+	else if (c == 'R')
+	{
+		for(i = 0; str[i] != '\0'; i++)
+		{
+			if (str[i] > 64 && str[i] < 91)
+			{
+				d = ((str[i] - 65 + 13) % 26) + 65;
+				buf[start + i] = d;
+			}
+			else if (str[i] > 96 && str[i] < 123)
+			{
+				d = ((str[i] - 97 + 13) % 26) + 97;
+				buf[start + i] = d;
+			}
+			else
+			{
+				buf[start + i] = str[i];
+			}
+		}
+	}
 	
 	return (start + i);
 }
@@ -54,7 +82,7 @@ int print_numbers(void *i, int base, char cap, char buf[BUFFER], int start)
 
 	if (base == 10 && cap == 'd')
 	{
-		(void) j, (void) jcopy, (void) power_other, (void) cap, (void) l, (void) lcopy;
+		/*(void) j, (void) jcopy, (void) power_other, (void) cap, (void) l, (void) lcopy;*/
 		k = *(int *) i, kcopy = k;
 		for (power_10 = 1; kcopy / 10; kcopy /= 10, power_10 *= 10)
 		;
@@ -71,7 +99,7 @@ int print_numbers(void *i, int base, char cap, char buf[BUFFER], int start)
 	}
 	else if (base == 2)
 	{
-		(void) j, (void) jcopy, (void) power_other, (void) cap, (void) l, (void) lcopy;
+		/*(void) j, (void) jcopy, (void) power_other, (void) cap, (void) l, (void) lcopy;*/
 		j = *(unsigned int *) i, jcopy = j;
 		for (power_other = 1; jcopy / 2; jcopy /= 2, power_other *= 2)
 		;
@@ -86,7 +114,7 @@ int print_numbers(void *i, int base, char cap, char buf[BUFFER], int start)
 	}
 	else if (base == 8)
 	{
-		(void) j, (void) jcopy, (void) power_other, (void) cap, (void) l, (void) lcopy;
+		/*(void) j, (void) jcopy, (void) power_other, (void) cap, (void) l, (void) lcopy;*/
 		j = *(unsigned int *) i, jcopy = j;
 		for (power_other = 001; jcopy / 0010; jcopy /= 0010, power_other *= 0010)
 		;
@@ -101,7 +129,7 @@ int print_numbers(void *i, int base, char cap, char buf[BUFFER], int start)
 	}
 	else if (base == 16 && cap == 'p')
 	{
-		(void) k, (void) kcopy, (void) power_10, (void) j, (void) jcopy, (void) power_other;
+		/*(void) k, (void) kcopy, (void) power_10, (void) j, (void) jcopy, (void) power_other;*/
 		l = *(long *) i, lcopy = l;
 		buf[start] = '0';
 		buf[++start] = 'x';
@@ -122,7 +150,7 @@ int print_numbers(void *i, int base, char cap, char buf[BUFFER], int start)
 	}
 	else if (base == 16)
 	{
-		(void) k, (void) kcopy, (void) power_10, (void) l, (void) lcopy, (void) power_long;
+		/*(void) k, (void) kcopy, (void) power_10, (void) l, (void) lcopy, (void) power_long;*/
 		j = *(unsigned int *) i, jcopy = j;
 		for (power_other = 0x1; jcopy / 0x10; jcopy /= 0x10, power_other *= 0x10)
 		;
@@ -151,7 +179,7 @@ int print_numbers(void *i, int base, char cap, char buf[BUFFER], int start)
 	}
 	else
 	{
-		(void) k, (void) kcopy, (void) power_10, (void) cap, (void) lcopy, (void) power_long, (void) l;
+		/*(void) k, (void) kcopy, (void) power_10, (void) cap, (void) lcopy, (void) power_long, (void) l;*/
 		j = *(unsigned int *) i, jcopy = j;
 		for (power_other = 1; jcopy / 10; jcopy /= 10, power_other *= 10)
 		;

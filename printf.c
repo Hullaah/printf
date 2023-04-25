@@ -38,6 +38,8 @@ int _printf(char *format, ...)
 		{
 		case 's':
                 case 'S':
+                case 'r':
+                case 'R':
 			s = va_arg(args, char *);
 			write_count = print_string(s, format[i], buf, write_count);
 			break;
