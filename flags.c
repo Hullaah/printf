@@ -9,14 +9,14 @@ int pound_plus_flag(char *str, char flag, char buf[BUFFER], int *start_string, i
 		{
 
 			if (
-                                str[i] == 's' || str[i] == 'p' || str[i] == 'R' || str[i] == 'i'
-                                || str[i] == 'd' || str[i] == 'r' || str[i] == 'c' || str[i] == 'S'
-                                || str[i] == 'u' || str[i] == '%' || str[i] == 'b'
-                        )
-                                return (start_buf);
+				str[i] == 's' || str[i] == 'p' || str[i] == 'R' || str[i] == 'i'
+				|| str[i] == 'd' || str[i] == 'r' || str[i] == 'c' || str[i] == 'S'
+				|| str[i] == 'u' || str[i] == '%' || str[i] == 'b'
+			)
+				return (start_buf);
 			i++;
 		}
-                if (str[i] == '\0')
+		if (str[i] == '\0')
 			return (start_buf);
 		if (str[i] == 'x' || str[i] == 'X')
 		{
@@ -29,19 +29,19 @@ int pound_plus_flag(char *str, char flag, char buf[BUFFER], int *start_string, i
 	}
 	else if (flag == '+')
 	{
-		while (str[i] != 'd' && str[i] != '\0')
-                {
-                        if (
-                                str[i] == 's' || str[i] == 'p' || str[i] == 'R' || str[i] == 'x'
-                                || str[i] == 'X' || str[i] == 'r' || str[i] == 'c' || str[i] == 'S'
-                                || str[i] == 'u' || str[i] == '%' || str[i] == 'b' || str[i] == 'o'
-                        )
-                                return (start_buf);
+		while (str[i] != 'd' && str[i] != 'i' && str[i] != '\0')
+		{
+			if (
+				str[i] == 's' || str[i] == 'p' || str[i] == 'R' || str[i] == 'x'
+				|| str[i] == 'X' || str[i] == 'r' || str[i] == 'c' || str[i] == 'S'
+				|| str[i] == 'u' || str[i] == '%' || str[i] == 'b' || str[i] == 'o'
+			)
+				return (start_buf);
 			i++;
-                }
+		}
 		if (str[i] == '\0')
 			return (start_buf);
-		if (str[i] == 'd')
+		if (str[i] == 'd' || str[i] == 'i')
 			buf[start_buf] = '+';
 	}
 	return (start_buf + 1);

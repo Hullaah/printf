@@ -82,8 +82,13 @@ int main(void)
 
         j = _printf("%#x\n%#o\n%#d\n%#X\n", 8192, 8192, 8192, 8192);
         _printf("%d\n", j);
-        j = printf("\n%#x\n%#o\n%#d\n%#X\n", 8192, 8192, 8192, 8192);
+        j = printf("%#x\n%#o\n%#d\n%#X\n", 8192, 8192, 8192, 8192);
         printf("%d\n", j);
+        _printf("%b\n", 46);
+
+        _printf("%+d\n%+%, %+i %+x\n%+X\n", 9830, 930,292, 8191);
+        printf("%i\n", 8920);
+
 
         /*_printf("\n%d\n%x\n%o\n%X\n", 8192);
         printf("\n%d\n%x\n%o\n%X\n", 8192);*/

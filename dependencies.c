@@ -17,8 +17,9 @@ int get_flags(char *str,char buf[BUFFER], int *start_string, int start_buf)
 	(
 	str[*start_string] != 's' && str[*start_string] != 'p' && str[*start_string] != 'x'
 	&& str[*start_string] != 'X' && str[*start_string] != 'i' && str[*start_string] != 'd' &&
-	str[*start_string] != 'c' && str[*start_string != 's']  && str[*start_string] != 'u' &&
-	str[*start_string] != 'o'
+	str[*start_string] != 'c'  && str[*start_string] != 'u' && str[*start_string] != 'o'
+        && str[*start_string] != 'b' && str[*start_string] != 'R' && str[*start_string] != '%' &&
+        str[*start_string] != 'S' && str[*start_string] != 'r'
 	)
 	{
 		switch (str[*start_string])
