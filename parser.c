@@ -1,8 +1,14 @@
 #include "printf.h"
 
+/**
+ * parse_flags - parses the flags from he format string into a bitmask
+ * @format: pointer to format string
+ * Return: The bitmask of flags in the format string
+ */
 static int parse_flags(const char **format)
 {
 	int flags = 0;
+
 	while (**format)
 	{
 		switch (*(*format)++)
@@ -29,6 +35,11 @@ static int parse_flags(const char **format)
 	return (flags);
 }
 
+/**
+ * parse_width - parses the width from the format string
+ * @format: pointer to format string
+ * Return: The parsed width from the format specifier
+ */
 static int parse_width(const char **format)
 {
 	int width = 0;
@@ -44,26 +55,38 @@ static int parse_width(const char **format)
 	return (width);
 }
 
+/**
+ * parse_length - parses the length modifier from the format string
+ * @format: pointer to format string
+ * Return: An enum representing the length modifier
+ */
 static LengthModifier parse_length(const char **format)
 {
-	if (**format) {
+	if (**format)
+	{
 		if ((*format)[0] == 'h' && (*format)[1] == 'h')
-			return LEN_HH;
+			return (LEN_HH);
 		else if ((*format)[0] == 'h')
-			return LEN_H;
+			return (LEN_H);
 		else if ((*format)[0] == 'l' && (*format)[1] == 'l')
-			return LEN_LL;
+			return (LEN_LL);
 		else if ((*format)[0] == 'l')
-			return LEN_L;
+			return (LEN_L);
 		else
-			return LEN_NONE;
+			return (LEN_NONE);
 	}
-	return LEN_NONE;
+	return (LEN_NONE);
 }
 
+/**
+ * parse_specifier - parses the specifier  from the format string
+ * @format: pointer to format string
+ * Return: The specfier as a char
+ */
 static char parse_specifier(const char **format)
 {
 	char specifier = **format;
+
 	if (specifier == 'd' || specifier == 'i' || specifier == 'b' ||
 	    specifier == 'o' || specifier == 'x' || specifier == 'X' ||
 	    specifier == 'u' || specifier == 'p' || specifier == 's' ||
@@ -76,6 +99,12 @@ static char parse_specifier(const char **format)
 	return (0);
 }
 
+/**
+ * parse_format_specifier - parse format specifier from the format string into
+ * the format specifier struct
+ * @format: pointer to format string
+ * @out: struct to output the parsed specifier into
+ */
 void parse_format_specifier(const char **format, FormatSpecifier *out)
 {
 	out->flags = parse_flags(format);
