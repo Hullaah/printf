@@ -108,4 +108,30 @@ bool _isdigit(int c);
 
 void parse_format_specifier(const char **format, FormatSpecifier *out);
 
+format_handler_fn dispatch_handler(char c);
+
+int handle_decimal(FormatSpecifier *fs, va_list *args);
+
+int handle_binary(FormatSpecifier *fs, va_list *args);
+
+int handle_octal(FormatSpecifier *fs, va_list *args);
+
+int handle_hexadecimal(FormatSpecifier *fs, va_list *args);
+
+int handle_unsigned(FormatSpecifier *fs, va_list *args);
+
+int handle_pointer(FormatSpecifier *fs, va_list *args);
+
+int handle_string(FormatSpecifier *fs, va_list *args);
+
+int handle_char(FormatSpecifier *fs, va_list *args);
+
+int handle_percent(FormatSpecifier *fs, va_list *args);
+
+int handle_unprintable(FormatSpecifier *fs, va_list *args);
+
+int handle_reverse(FormatSpecifier *fs, va_list *args);
+
+int handle_rot13(FormatSpecifier *fs, va_list *args);
+
 #endif

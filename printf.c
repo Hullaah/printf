@@ -1,5 +1,5 @@
-#include <stdarg.h>
 #include "printf.h"
+#include <stdarg.h>
 /**
  * _printf - works just like the standard library printf
  * @format: format specifier
@@ -8,9 +8,11 @@
 int _printf(const char *format, ...)
 {
 
-	int len = 0, i = 0;
+	int len = 0;
 	char buf[LENGTH];
+	va_list args;
 
+	va_start(args, format);
 	while (*format)
 	{
 		if (*format == '%')
@@ -18,10 +20,25 @@ int _printf(const char *format, ...)
 			format++;
 			FormatSpecifier fs;
 			parse_format_specifier(&format, &fs);
+			format_handler_fn handler =
+			    dispatch_handler(fs.specifier);
+			if (handler)
+			{
+				len += handler(&fs, &args);
+			}
+			else
+			{
+				buf[len++] = '%';
+				if (fs.specifier != '\0')
+					buf[len++] = fs.specifier;
+			}
 		}
-		buf[i++] = *format;
-		len++;
-		format++;
+		else
+		{
+			format++;
+			buf[len++] = *format;
+		}
 	}
-	return (0);
+	va_end(args);
+	return (len);
 }

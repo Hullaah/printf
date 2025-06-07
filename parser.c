@@ -85,18 +85,7 @@ static LengthModifier parse_length(const char **format)
  */
 static char parse_specifier(const char **format)
 {
-	char specifier = **format;
-
-	if (specifier == 'd' || specifier == 'i' || specifier == 'b' ||
-	    specifier == 'o' || specifier == 'x' || specifier == 'X' ||
-	    specifier == 'u' || specifier == 'p' || specifier == 's' ||
-	    specifier == 'c' || specifier == '%' || specifier == 'S' ||
-	    specifier == 'r' || specifier == 'R')
-	{
-		(*format)++;
-		return (specifier);
-	}
-	return (0);
+	return *(*format)++;
 }
 
 /**
