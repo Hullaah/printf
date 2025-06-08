@@ -44,13 +44,13 @@ static int parse_width(const char **format)
 {
 	int width = 0;
 	int base = 1;
-	char c;
 
-	while (_isdigit(c = *(*format)++))
+	while (_isdigit(**format))
 	{
 		width *= base;
-		width += c - '0';
+		width += **format - '0';
 		base *= 10;
+		(*format)++;
 	}
 	return (width);
 }
@@ -87,6 +87,7 @@ static char parse_specifier(const char **format)
 {
 	return *(*format)++;
 }
+
 
 /**
  * parse_format_specifier - parse format specifier from the format string into
