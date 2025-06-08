@@ -40,19 +40,16 @@ static int parse_flags(const char **format)
  * @format: pointer to format string
  * Return: The parsed width from the format specifier
  */
-static int parse_width(const char **format)
-{
-	int width = 0;
-	int base = 1;
+static int parse_width(const char **format) { return (_atoi(format)); }
 
-	while (_isdigit(**format))
-	{
-		width *= base;
-		width += **format - '0';
-		base *= 10;
-		(*format)++;
-	}
-	return (width);
+/**
+ * parse_precision - parses the precision from the format string
+ * @format: pointer to format string
+ * Return: The parsed precision from the format specifier
+ */
+static int parse_precision(const char **format)
+{
+	return (**format == '.' ? _atoi(format) : 0);
 }
 
 /**
@@ -83,11 +80,7 @@ static LengthModifier parse_length(const char **format)
  * @format: pointer to format string
  * Return: The specfier as a char
  */
-static char parse_specifier(const char **format)
-{
-	return *(*format)++;
-}
-
+static char parse_specifier(const char **format) { return *(*format)++; }
 
 /**
  * parse_format_specifier - parse format specifier from the format string into
@@ -99,6 +92,7 @@ void parse_format_specifier(const char **format, FormatSpecifier *out)
 {
 	out->flags = parse_flags(format);
 	out->width = parse_width(format);
+	out->precision = parse_precision(format);
 	out->length = parse_length(format);
 	out->specifier = parse_specifier(format);
 }

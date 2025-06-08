@@ -55,6 +55,7 @@ typedef struct
 {
 	int flags;
 	int width;
+	int precision;
 	LengthModifier length;
 	char specifier;
 } FormatSpecifier;
@@ -105,6 +106,8 @@ typedef struct
 int _printf(const char *format, ...);
 
 bool _isdigit(int c);
+
+int _atoi(const char **string);
 
 void parse_format_specifier(const char **format, FormatSpecifier *out);
 
