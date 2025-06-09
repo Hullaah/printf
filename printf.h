@@ -78,7 +78,7 @@ typedef struct
  *   parsed format specifier and the argument list, and is expected to produce
  *   the formatted output accordingly.
  */
-typedef int (*format_handler_fn)(FormatSpecifier *fs, va_list *args);
+typedef void (*format_handler_fn)(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
 /**
  * struct FormatHandlerEntry - Associates a format specifier character with its
@@ -113,28 +113,32 @@ void parse_format_specifier(const char **format, FormatSpecifier *out);
 
 format_handler_fn dispatch_handler(char c);
 
-int handle_decimal(FormatSpecifier *fs, va_list *args);
+void dispatch(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_binary(FormatSpecifier *fs, va_list *args);
+void flush(char buf[], int len);
 
-int handle_octal(FormatSpecifier *fs, va_list *args);
+void handle_decimal(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_hexadecimal(FormatSpecifier *fs, va_list *args);
+void handle_binary(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_unsigned(FormatSpecifier *fs, va_list *args);
+void handle_octal(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_pointer(FormatSpecifier *fs, va_list *args);
+void handle_hexadecimal(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_string(FormatSpecifier *fs, va_list *args);
+void handle_unsigned(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_char(FormatSpecifier *fs, va_list *args);
+void handle_pointer(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_percent(FormatSpecifier *fs, va_list *args);
+void handle_string(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_unprintable(FormatSpecifier *fs, va_list *args);
+void handle_char(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_reverse(FormatSpecifier *fs, va_list *args);
+void handle_percent(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
-int handle_rot13(FormatSpecifier *fs, va_list *args);
+void handle_unprintable(FormatSpecifier *fs, va_list *args, char buf[], int *len);
+
+void handle_reverse(FormatSpecifier *fs, va_list *args, char buf[], int *len);
+
+void handle_rot13(FormatSpecifier *fs, va_list *args, char buf[], int *len);
 
 #endif

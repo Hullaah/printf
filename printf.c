@@ -20,25 +20,20 @@ int _printf(const char *format, ...)
 			format++;
 			FormatSpecifier fs;
 			parse_format_specifier(&format, &fs);
-			format_handler_fn handler =
-			    dispatch_handler(fs.specifier);
-			if (handler)
-			{
-				len += handler(&fs, &args);
-			}
-			else
-			{
-				buf[len++] = '%';
-				if (fs.specifier != '\0')
-					buf[len++] = fs.specifier;
-			}
+			dispatch(&fs, &args, buf, &len);
 		}
 		else
 		{
-			format++;
+			if (len == LENGTH)
+			{
+				flush(buf, len);
+				len = 0;
+			}
 			buf[len++] = *format;
+			format++;
 		}
 	}
+	flush(buf, len);
 	va_end(args);
 	return (len);
 }

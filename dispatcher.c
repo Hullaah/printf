@@ -29,3 +29,23 @@ format_handler_fn dispatch_handler(char c)
 	}
 	return (NULL);
 }
+
+void dispatch(FormatSpecifier *fs, va_list *args, char buf[], int *len)
+{
+	format_handler_fn handler = dispatch_handler(fs->specifier);
+	if (handler)
+	{
+		handler(fs, args, buf, len);
+	}
+	else
+	{
+		if (*len + 2 >= LENGTH)
+		{
+			flush(buf, *len);
+			*len = 0;
+		}
+		buf[(*len)++] = '%';
+		if (fs->specifier != '\0')
+			buf[(*len)++] = fs->specifier;
+	}
+}

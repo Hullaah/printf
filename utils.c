@@ -1,5 +1,7 @@
 #include "printf.h"
 #include <stdbool.h>
+#include <unistd.h>
+
 /**
  * _isdigit - checks if a given character is a digit
  * @c: character to check whether is digit
@@ -25,3 +27,10 @@ int _atoi(const char **ptr)
 	}
 	return (num);
 }
+
+/**
+ * flush - flushes the buffer to stdout
+ * @buf: buffer to flush to stdout
+ * @len:
+ */
+void flush(char *buf, int len) { write(STDOUT_FILENO, buf, len); }
