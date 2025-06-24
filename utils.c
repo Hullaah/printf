@@ -1,5 +1,4 @@
 #include "printf.h"
-#include <stdbool.h>
 #include <unistd.h>
 
 /**
@@ -31,6 +30,62 @@ int _atoi(const char **ptr)
 /**
  * flush - flushes the buffer to stdout
  * @buf: buffer to flush to stdout
- * @len:
+ * @len: length of the buffer
  */
 void flush(char *buf, int len) { write(STDOUT_FILENO, buf, len); }
+
+
+/**
+ * _strlen - calculates the length of a string
+ * @str: string to calculate length of
+ * Return: The length of the string
+ */
+int _strlen(const char *str)
+{
+	int len = 0;
+
+	while (str[len])
+		len++;
+	return (len);
+}
+
+/**
+ * write_zero - writes zeroes to the buffer
+ * @buf: buffer to write zeroes to
+ * @len: current length of the buffer
+ * @count: number of zeroes to write
+ */
+void write_zero(char *buf, int *len, int count)
+{
+	int i;
+
+	for (i = 0; i < count; i++)
+	{
+		if (*len == LENGTH)
+		{
+			flush(buf, *len);
+			*len = 0;
+		}
+		buf[(*len)++] = '0';
+	}
+}
+/**
+ * write_space - writes spaces to the buffer
+ * @buf: buffer to write spaces to
+ * @len: current length of the buffer
+ * @count: number of spaces to write
+ */
+void write_space(char *buf, int *len, int count)
+{
+	int i;
+
+	for (i = 0; i < count; i++)
+	{
+		if (*len == LENGTH)
+		{
+			flush(buf, *len);
+			*len = 0;
+		}
+		buf[(*len)++] = ' ';
+	}
+}

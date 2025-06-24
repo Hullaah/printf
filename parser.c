@@ -5,13 +5,13 @@
  * @format: pointer to format string
  * Return: The bitmask of flags in the format string
  */
-static int parse_flags(const char **format)
+static unsigned int parse_flags(const char **format)
 {
 	int flags = 0;
 
 	while (**format)
 	{
-		switch (*(*format)++)
+		switch (**format)
 		{
 		case '-':
 			flags |= FLAG_LEFT;
@@ -31,6 +31,7 @@ static int parse_flags(const char **format)
 		default:
 			return (flags);
 		}
+		(*format)++;
 	}
 	return (flags);
 }
@@ -40,7 +41,7 @@ static int parse_flags(const char **format)
  * @format: pointer to format string
  * Return: The parsed width from the format specifier
  */
-static int parse_width(const char **format) { return (_atoi(format)); }
+static unsigned int parse_width(const char **format) { return (_atoi(format)); }
 
 /**
  * parse_precision - parses the precision from the format string
@@ -49,7 +50,12 @@ static int parse_width(const char **format) { return (_atoi(format)); }
  */
 static int parse_precision(const char **format)
 {
-	return (**format == '.' ? _atoi(format) : 0);
+	if (**format == '.')
+	{
+		(*format)++;
+		return (_atoi(format));
+	}
+	return (-1);
 }
 
 /**
@@ -57,7 +63,7 @@ static int parse_precision(const char **format)
  * @format: pointer to format string
  * Return: An enum representing the length modifier
  */
-static LengthModifier parse_length(const char **format)
+static enum LengthModifier parse_length(const char **format)
 {
 	if (**format)
 	{
@@ -88,7 +94,7 @@ static char parse_specifier(const char **format) { return *(*format)++; }
  * @format: pointer to format string
  * @out: struct to output the parsed specifier into
  */
-void parse_format_specifier(const char **format, FormatSpecifier *out)
+void parse_format_specifier(const char **format, struct FormatSpecifier *out)
 {
 	out->flags = parse_flags(format);
 	out->width = parse_width(format);

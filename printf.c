@@ -11,6 +11,7 @@ int _printf(const char *format, ...)
 	int len = 0;
 	char buf[LENGTH];
 	va_list args;
+	struct FormatSpecifier fs;
 
 	va_start(args, format);
 	while (*format)
@@ -18,7 +19,6 @@ int _printf(const char *format, ...)
 		if (*format == '%')
 		{
 			format++;
-			FormatSpecifier fs;
 			parse_format_specifier(&format, &fs);
 			dispatch(&fs, &args, buf, &len);
 		}

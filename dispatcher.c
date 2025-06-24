@@ -13,7 +13,7 @@
 format_handler_fn dispatch_handler(char c)
 {
 	int i;
-	FormatHandlerEntry handler_table[] = {
+	struct FormatHandlerEntry handler_table[] = {
 	    {'d', handle_decimal},     {'i', handle_decimal},
 	    {'b', handle_binary},      {'o', handle_octal},
 	    {'x', handle_hexadecimal}, {'X', handle_hexadecimal},
@@ -30,9 +30,20 @@ format_handler_fn dispatch_handler(char c)
 	return (NULL);
 }
 
-void dispatch(FormatSpecifier *fs, va_list *args, char buf[], int *len)
+/**
+ * dispatch - Calls the appropriate handler function based on the format
+ * specifier in the provided FormatSpecifier structure.
+ * @fs: Pointer to a FormatSpecifier structure containing the format specifier
+ * and other related information.
+ * @args: Pointer to a va_list containing the arguments to be formatted.
+ * @buf: Buffer where the formatted output will be stored.
+ * @len: Pointer to an integer that keeps track of the current length of the
+ * buffer.
+ */
+void dispatch(struct FormatSpecifier *fs, va_list *args, char buf[], int *len)
 {
 	format_handler_fn handler = dispatch_handler(fs->specifier);
+
 	if (handler)
 	{
 		handler(fs, args, buf, len);
