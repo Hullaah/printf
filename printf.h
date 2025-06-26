@@ -61,7 +61,7 @@ enum LengthModifier
 struct FormatSpecifier
 {
 	unsigned int flags;
-	unsigned int width;
+	int width;
 	int precision;
 	enum LengthModifier length;
 	char specifier;
