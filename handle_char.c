@@ -21,11 +21,15 @@ void handle_char(struct FormatSpecifier *fs, va_list *args, char *buf,
 		flush(buf, *len);
 		*len = 0;
 	}
-	buf[(*len)++] = c;
-
+	
 	num_pad = max(fs->width - 1, 0);
-	if (fs->flags & FLAG_LEFT)
+	if (fs->flags & FLAG_LEFT){
+		buf[(*len)++] = c;
 		write_space(buf, len, num_pad);
+	}
 	else
+	{
 		write_space(buf, len, num_pad);
+		buf[(*len)++] = c;
+	}
 }
