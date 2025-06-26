@@ -89,3 +89,17 @@ void write_space(char *buf, int *len, int count)
 		buf[(*len)++] = ' ';
 	}
 }
+
+void reverse(char *buf, int start, int end)
+{
+	char temp;
+
+	while (start < end)
+	{
+		temp = buf[start];
+		buf[start] = buf[end];
+		buf[end] = temp;
+		start++;
+		end--;
+	}
+}

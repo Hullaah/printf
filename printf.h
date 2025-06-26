@@ -123,6 +123,8 @@ void write_zero(char *buf, int *len, int count);
 
 void write_space(char *buf, int *len, int count);
 
+void reverse(char *buf, int start, int end);
+
 void parse_format_specifier(const char **format, struct FormatSpecifier *out);
 
 format_handler_fn dispatch_handler(char c);
