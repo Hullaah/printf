@@ -1,7 +1,6 @@
 #include "printf.h"
 #include <stdarg.h>
 #include <stdlib.h>
-
 /**
  * write_string - Writes a string to the buffer
  * @string: The string to write
@@ -39,7 +38,7 @@ void handle_string(struct FormatSpecifier *fs, va_list *args, char *buf,
 		   int *len)
 {
 	int string_len, num_written, num_pad;
-	char *string = va_arg(*args, char *);
+	char *string = (char *) va_arg(*args, char *);
 
 	if (string == NULL)
 		string = "(null)";
