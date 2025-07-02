@@ -43,7 +43,10 @@ void handle_string(struct FormatSpecifier *fs, va_list *args, char *buf,
 	if (string == NULL)
 		string = "(null)";
 	string_len = _strlen(string);
-	num_written = min(fs->precision, string_len);
+	if (fs->precision >= 0)
+		num_written = min(fs->precision, string_len);
+	else
+		num_written = string_len;
 	num_pad = max(fs->width - num_written, 0);
 	if (fs->flags & FLAG_LEFT)
 	{
