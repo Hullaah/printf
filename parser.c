@@ -7,7 +7,7 @@
  */
 static unsigned int parse_flags(const char **format)
 {
-	int flags = 0;
+	unsigned int flags = 0;
 
 	while (**format)
 	{
@@ -68,13 +68,25 @@ static enum LengthModifier parse_length(const char **format)
 	if (**format)
 	{
 		if ((*format)[0] == 'h' && (*format)[1] == 'h')
+		{
+			*format += 2;
 			return (LEN_HH);
+		}
 		else if ((*format)[0] == 'h')
+		{
+			(*format)++;
 			return (LEN_H);
+		}
 		else if ((*format)[0] == 'l' && (*format)[1] == 'l')
+		{
+			*format += 2;
 			return (LEN_LL);
+		}
 		else if ((*format)[0] == 'l')
+		{
+			(*format)++;
 			return (LEN_L);
+		}
 		else
 			return (LEN_NONE);
 	}
