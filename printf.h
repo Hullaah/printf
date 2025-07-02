@@ -13,6 +13,7 @@
 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define min(a, b) ((a) < (b) ? (a) : (b))
+#define UNUSED(x) ((void) (x))
 
 /**
  * enum LengthModifier - Represents the length modifiers used in format
