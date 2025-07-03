@@ -18,16 +18,7 @@ static void write_ll(long long num, char buf[], int *len)
 	bool is_ll_min = num == LLONG_MIN;
 
 	if (num < 0)
-	{
-		if (*len == LENGTH)
-		{
-			flush(buf, *len);
-			*len = 0;
-		}
-		buf[(*len)++] = '-';
-		start = *len;
 		num = is_ll_min ? LLONG_MAX : -num;
-	}
 	do
 	{
 		if (*len == LENGTH)
@@ -35,12 +26,23 @@ static void write_ll(long long num, char buf[], int *len)
 			flush(buf, *len);
 			*len = 0;
 		}
-		buf[(*len)++] = '0' + (is_ll_min ? num % 10 + 1 : num % 10);
+		buf[(*len)++] =
+		    '0' +
+		    ((is_ll_min && *len == start) ? num % 10 + 1 : num % 10);
 		num /= 10;
 	} while (num > 0);
 	reverse(buf, start, *len - 1);
 }
 
+/**
+ * get_num - Retrieves a number from the va_list based on the length modifier
+ * @length: The length modifier that indicates how to interpret the argument
+ * @args: Pointer to the va_list containing the arguments
+ * Description: This function retrieves a number from the va_list based on the
+ * specified length modifier.
+ * It handles different length modifiers such as hh, h, l, ll, and none.
+ * Returns: The number as a long long integer.
+ */
 static long long get_num(enum LengthModifier length, va_list *args)
 {
 	switch (length)
@@ -58,6 +60,13 @@ static long long get_num(enum LengthModifier length, va_list *args)
 	}
 }
 
+/**
+ * numlen - Calculates the number of digits in a long long integer
+ * @num: The number for which to calculate the length
+ * Description: This function calculates the number of digits in a long long
+ * integer, handling special cases such as LLONG_MIN.
+ * Returns: The number of digits in the number.
+ */
 static int numlen(long long num)
 {
 	int len = 0;
@@ -65,10 +74,7 @@ static int numlen(long long num)
 	if (num == LLONG_MIN)
 		return 20;
 	if (num < 0)
-	{
-		len++;
 		num = -num;
-	}
 	do
 	{
 		len++;
@@ -76,10 +82,28 @@ static int numlen(long long num)
 	} while (num > 0);
 	return len;
 }
-
-static void write_space_or_plus(unsigned flags, char buf[], int *len)
+/**
+ * write_sign - Writes the sign of the number to the buffer
+ * @flags: The flags indicating how to format the sign
+ * @is_negative: A boolean indicating if the number is negative
+ * @buf: Buffer where the sign will be written
+ * @len: Pointer to an integer that keeps track of the current length of the
+ * buffer
+ * Description: This function writes the sign of the number to the buffer
+ * based on the flags and whether the number is negative.
+ */
+static void write_sign(unsigned flags, bool is_negative, char buf[], int *len)
 {
-	if ((flags & FLAG_PLUS) || (flags & FLAG_SPACE))
+	if (is_negative)
+	{
+		if (*len == LENGTH)
+		{
+			flush(buf, *len);
+			*len = 0;
+		}
+		buf[(*len)++] = '-';
+	}
+	else if ((flags & FLAG_PLUS) || (flags & FLAG_SPACE))
 	{
 		if (*len == LENGTH)
 		{
@@ -113,15 +137,19 @@ void handle_decimal(struct FormatSpecifier *fs, va_list *args, char *buf,
 	{
 		zero_padding = space_padding;
 		space_padding = 0;
+		if (num < 0 || fs->flags & FLAG_SPACE || fs->flags & FLAG_PLUS)
+			zero_padding--;
 	}
 	if (fs->precision >= 0)
 	{
 		zero_padding = max(fs->precision - num_len, 0);
 		space_padding = max(fs->width - (num_len + zero_padding), 0);
+		if (num < 0 || fs->flags & FLAG_SPACE || fs->flags & FLAG_PLUS)
+			space_padding--;
 	}
 	if (fs->flags & FLAG_LEFT)
 	{
-		write_space_or_plus(fs->flags, buf, len);
+		write_sign(fs->flags, num < 0, buf, len);
 		write_zero(buf, len, zero_padding);
 		write_ll(num, buf, len);
 		write_space(buf, len, space_padding);
@@ -129,7 +157,7 @@ void handle_decimal(struct FormatSpecifier *fs, va_list *args, char *buf,
 	else
 	{
 		write_space(buf, len, space_padding);
-		write_space_or_plus(fs->flags, buf, len);
+		write_sign(fs->flags, num < 0, buf, len);
 		write_zero(buf, len, zero_padding);
 		write_ll(num, buf, len);
 	}
