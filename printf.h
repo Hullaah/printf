@@ -126,6 +126,10 @@ void write_space(char *buf, int *len, int count);
 
 void reverse(char *buf, int start, int end);
 
+int unumlen(unsigned long long num, int base);
+
+unsigned long long get_unum(enum LengthModifier length, va_list *args);
+
 void parse_format_specifier(const char **format, struct FormatSpecifier *out);
 
 format_handler_fn dispatch_handler(char c);

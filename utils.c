@@ -34,7 +34,6 @@ int _atoi(const char **ptr)
  */
 void flush(char *buf, int len) { write(STDOUT_FILENO, buf, len); }
 
-
 /**
  * _strlen - calculates the length of a string
  * @str: string to calculate length of
@@ -101,5 +100,36 @@ void reverse(char *buf, int start, int end)
 		buf[end] = temp;
 		start++;
 		end--;
+	}
+}
+
+int unumlen(unsigned long long num, int base)
+{
+	int len = 0;
+
+	do
+	{
+		len++;
+	} while ((num /= base) > 0);
+	return len;
+}
+
+unsigned long long get_unum(enum LengthModifier length, va_list *args)
+{
+	switch (length)
+	{
+	case LEN_HH:
+		return (unsigned long long)(unsigned char)va_arg(*args,
+								 unsigned int);
+	case LEN_H:
+		return (unsigned long long)(unsigned short)va_arg(*args,
+								  unsigned int);
+	case LEN_L:
+		return (unsigned long long)(unsigned long)va_arg(*args,
+								 unsigned long);
+	case LEN_LL:
+		return (unsigned long long)va_arg(*args, unsigned long long);
+	default:
+		return (unsigned long long)va_arg(*args, unsigned int);
 	}
 }
