@@ -1,4 +1,4 @@
-#include "../printf.h"
+#include "printf.h"
 #include <limits.h>
 #include <stdio.h>
 
@@ -106,6 +106,67 @@ int main(void)
 
 	std_len = printf("STD: |%c|\n", 'Z');
 	my_len = _printf("MY : |%c|\n", 'Z');
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |% u|\n", 42);
+	my_len = _printf("MY : |% u|\n", 42);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%05u|\n", 7);
+	my_len = _printf("MY : |%05u|\n", 7);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%-5u|\n", 7);
+	my_len = _printf("MY : |%-5u|\n", 7);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%.4u|\n", 42);
+	my_len = _printf("MY : |%.4u|\n", 42);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%8.4u|\n", 42);
+	my_len = _printf("MY : |%8.4u|\n", 42);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |Name: %10s | Score: %+05u | Grade: %c|\n",
+			 "Alice", 93, 'A');
+	my_len = _printf("MY : |Name: %10s | Score: %+05u | Grade: %c|\n",
+			 "Alice", 93, 'A');
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	unsigned short ush = USHRT_MAX;
+	std_len = printf("STD: %%hu -> |%hu|\n", ush);
+	my_len = _printf("MY : %%hu -> |%hu|\n", ush);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	unsigned long ulg = ULONG_MAX;
+	std_len = printf("STD: %%lu -> |%lu|\n", ulg);
+	my_len = _printf("MY : %%lu -> |%lu|\n", ulg);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	long long ullg = LLONG_MIN;
+	std_len = printf("STD: %%llu -> |%llu|\n", ullg);
+	my_len = _printf("MY : %%llu -> |%llu|\n", ullg);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%+10.5hhu|\n", (unsigned char)-127);
+	my_len = _printf("MY : |%+10.5hhu|\n", (unsigned char)-127);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%-8.4hu|\n", (unsigned short)-32);
+	my_len = _printf("MY : |%-8.4hu|\n", (unsigned short)-32);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |% 12.6lu|\n", (long)123456);
+	my_len = _printf("MY : |% 12.6lu|\n", (long)123456);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%025.7llu|\n", (unsigned long long)-9999999);
+	my_len = _printf("MY : |%025.7llu|\n", (unsigned long long)-9999999);
+	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
+
+	std_len = printf("STD: |%hhu|\n", (unsigned char)255);
+	my_len = _printf("MY : |%hhu|\n", (unsigned char)255);
 	printf("Lengths - STD: %d, MY: %d\n\n", std_len, my_len);
 
 	return 0;
