@@ -1,0 +1,4 @@
+*.o
+printf
+.cache/
+compile_commands.json
