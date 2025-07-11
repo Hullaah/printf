@@ -83,7 +83,7 @@ This project was created to:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YourUsername/printf.git
+git clone https://github.com/Hullaah/printf.git
 cd printf
 ```
 2. Build the project
