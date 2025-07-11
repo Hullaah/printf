@@ -1,9 +1,9 @@
-#include "format_specifier.h"
-#include "handlers.h"
-#include "utils.h"
+#include <format_specifier.h>
+#include <handlers.h>
 #include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <utils.h>
 /**
  * write_ll - Writes an number to the buffer
  * @num: The number to write
@@ -28,9 +28,9 @@ static void write_ll(long long num, char buf[], int *len)
 			flush(buf, *len);
 			*len = 0;
 		}
-		buf[(*len)++] =
-		    '0' +
-		    ((is_ll_min && *len == start) ? num % 10 + 1 : num % 10);
+		buf[(*len)] = '0' + ((is_ll_min && *len == start) ? num % 10 + 1
+								  : num % 10);
+		(*len)++;
 		num /= 10;
 	} while (num > 0);
 	reverse(buf, start, *len - 1);

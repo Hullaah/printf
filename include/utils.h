@@ -1,9 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <stdbool.h>
-#include <stdarg.h>
 #include "format_specifier.h"
+#include <stdarg.h>
+#include <stdbool.h>
 
 #define LENGTH 1024
 #define FLAG_LEFT (1 << 0)

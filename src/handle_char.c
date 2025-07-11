@@ -1,7 +1,7 @@
-#include "format_specifier.h"
-#include "handlers.h"
-#include "utils.h"
+#include <format_specifier.h>
+#include <handlers.h>
 #include <stdarg.h>
+#include <utils.h>
 
 /*
  * handle_char - Handles the character format specifier

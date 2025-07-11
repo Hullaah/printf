@@ -1,8 +1,8 @@
-#include "format_specifier.h"
-#include "handlers.h"
-#include "utils.h"
+#include <format_specifier.h>
+#include <handlers.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <utils.h>
 /**
  * write_string - Writes a string to the buffer
  * @string: The string to write

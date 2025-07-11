@@ -1,7 +1,7 @@
-#include "format_specifier.h"
-#include "handlers.h"
-#include "utils.h"
+#include <format_specifier.h>
+#include <handlers.h>
 #include <stdarg.h>
+#include <utils.h>
 
 void handle_percent(struct FormatSpecifier *fs, va_list *args, char *buf,
 		    int *len)

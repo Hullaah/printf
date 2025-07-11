@@ -1,7 +1,7 @@
-#include "handlers.h"
-#include "utils.h"
-#include "dispatcher.h"
+#include <dispatcher.h>
+#include <handlers.h>
 #include <stdlib.h>
+#include <utils.h>
 /**
  * dispatch_handler - Returns the appropriate handler function for a given
  * format specifier character.

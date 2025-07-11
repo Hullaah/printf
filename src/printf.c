@@ -1,9 +1,9 @@
-#include "printf.h"
-#include "dispatcher.c"
-#include "format_specifier.h"
-#include "parser.h"
-#include "utils.h"
+#include <dispatcher.h>
+#include <format_specifier.h>
+#include <parser.h>
+#include <printf.h>
 #include <stdarg.h>
+#include <utils.h>
 
 /**
  * _printf - works just like the standard library printf

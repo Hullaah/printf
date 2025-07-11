@@ -1,54 +1,59 @@
 # Compiler and flags
-CC = gcc
-CFLAGS = -Wall -Wextra -pedantic -std=gnu11 -I. -g
-HEADER = printf.h
+CC        := gcc
+CFLAGS    := -Wall -Wextra -Werror -pedantic -std=gnu11 -O2 -Wno-format
+DEBUGFLAGS := -g -O0
 
-# Target executable
-TARGET = printf
+# Directories
+SRCDIR    := src
+TESTDIR   := tests
+OBJDIR    := build
 
-# Source files
-SRCS = tests/main.c \
-       dispatcher.c \
-       handle_binary.c \
-       handle_char.c \
-       handle_decimal.c \
-       handle_hexadecimal.c \
-       handle_octal.c \
-       handle_percent.c \
-       handle_pointer.c \
-       handle_reverse.c \
-       handle_rot13.c \
-       handle_string.c \
-       handle_unprintable.c \
-       handle_unsigned.c \
-       parser.c \
-       printf.c \
-       utils.c
+# Sources and Object files
+SRCS      := $(wildcard $(SRCDIR)/*.c)
+OBJS      := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-# Object files (replace .c with .o)
-OBJS = $(SRCS:.c=.o)
+TEST_SRC  := $(TESTDIR)/main.c
+TEST_OBJ  := $(OBJDIR)/main.o
+TARGET  := printf
+
+INCLUDES  := -Iinclude
 
 # Default target
 all: $(TARGET)
 
-# Build the target executable
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+# Build test executable
+$(TARGET): $(OBJS) $(TEST_OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
-# Compile source files to object files
-%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+# Produce object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Clean up object files and executable
+$(OBJDIR)/main.o: $(TEST_SRC) | $(OBJDIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Create build directory if needed
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(OBJDIR) $(TARGET)
+
+# Debug mode: build with -g and run gdb
+debug: CFLAGS := $(CFLAGS) $(DEBUGFLAGS)
+debug: clean all
+	@echo "Launching gdb on $(TARGET)..."
+	@gdb ./$(TARGET)
+
+run: all
+	@./$(TARGET)
+
 
 # Clean and Rebuild
 re: clean all
 
 # Format code with clang-format
 format:
-	clang-format -i *.c *.h
+	clang-format -i src/*.c include/*.h
 
 # Show help
 help:
@@ -56,12 +61,10 @@ help:
 	@echo "  all      - Build the project (default)"
 	@echo "  clean    - Remove object files and executable"
 	@echo "  re       - Clean and rebuild"
-	@echo "  install  - Install executable to /usr/local/bin"
-	@echo "  uninstall- Remove executable from /usr/local/bin"
-	@echo "  test     - Run the program"
-	@echo "  valgrind - Run with valgrind for memory checking"
 	@echo "  format   - Format code with clang-format"
 	@echo "  help     - Show this help message"
+	@echo "  debug    - Build with debug flags and run gdb"
+	@echo "  run      - Run the test executable"
 
 # Phony targets
-.PHONY: all clean re format help
+.PHONY: all clean re format help debug run

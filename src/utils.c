@@ -1,5 +1,5 @@
-#include "utils.h"
 #include <unistd.h>
+#include <utils.h>
 
 /**
  * _isdigit - checks if a given character is a digit

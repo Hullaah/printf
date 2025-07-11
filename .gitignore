@@ -2,3 +2,4 @@
 printf
 .cache/
 compile_commands.json
+build/
