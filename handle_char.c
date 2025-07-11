@@ -1,4 +1,7 @@
-#include "printf.h"
+#include "format_specifier.h"
+#include "handlers.h"
+#include "utils.h"
+#include <stdarg.h>
 
 /*
  * handle_char - Handles the character format specifier
@@ -10,8 +13,7 @@
  * Description: This function retrieves a character argument from the va_list
  * and appends it to the buffer, flushing it when necessary.
  */
-void handle_char(struct FormatSpecifier *fs, va_list *args, char *buf,
-		 int *len)
+void handle_char(struct FormatSpecifier *fs, va_list *args, char *buf, int *len)
 {
 	int num_pad;
 	char c = (char)va_arg(*args, int);
@@ -21,9 +23,10 @@ void handle_char(struct FormatSpecifier *fs, va_list *args, char *buf,
 		flush(buf, *len);
 		*len = 0;
 	}
-	
+
 	num_pad = max(fs->width - 1, 0);
-	if (fs->flags & FLAG_LEFT){
+	if (fs->flags & FLAG_LEFT)
+	{
 		buf[(*len)++] = c;
 		write_space(buf, len, num_pad);
 	}

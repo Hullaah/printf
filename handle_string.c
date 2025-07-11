@@ -1,4 +1,6 @@
-#include "printf.h"
+#include "format_specifier.h"
+#include "handlers.h"
+#include "utils.h"
 #include <stdarg.h>
 #include <stdlib.h>
 /**
@@ -38,7 +40,7 @@ void handle_string(struct FormatSpecifier *fs, va_list *args, char *buf,
 		   int *len)
 {
 	int string_len, num_written, num_pad;
-	char *string = (char *) va_arg(*args, char *);
+	char *string = (char *)va_arg(*args, char *);
 
 	if (string == NULL)
 		string = "(null)";

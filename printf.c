@@ -1,5 +1,10 @@
 #include "printf.h"
+#include "dispatcher.c"
+#include "format_specifier.h"
+#include "parser.h"
+#include "utils.h"
 #include <stdarg.h>
+
 /**
  * _printf - works just like the standard library printf
  * @format: format specifier

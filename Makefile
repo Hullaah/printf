@@ -43,6 +43,9 @@ $(TARGET): $(OBJS)
 clean:
 	rm -f $(OBJS) $(TARGET)
 
+# Clean and Rebuild
+re: clean all
+
 # Format code with clang-format
 format:
 	clang-format -i *.c *.h
@@ -61,4 +64,4 @@ help:
 	@echo "  help     - Show this help message"
 
 # Phony targets
-.PHONY: all clean re install uninstall test valgrind format help
+.PHONY: all clean re format help

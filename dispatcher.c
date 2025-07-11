@@ -1,6 +1,7 @@
-#include "printf.h"
+#include "handlers.h"
+#include "utils.h"
+#include "dispatcher.h"
 #include <stdlib.h>
-
 /**
  * dispatch_handler - Returns the appropriate handler function for a given
  * format specifier character.
