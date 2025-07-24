@@ -1,19 +1,32 @@
 # Compiler and flags
 CC        := gcc
-CFLAGS    := -Wall -Wextra -Werror -pedantic -std=gnu11 -O2 -Wno-format
+CFLAGS    := -Wall -Wextra -Werror -pedantic -std:=gnu11 -O2 -Wno-format
 DEBUGFLAGS := -g -O0
 
 # Directories
-SRCDIR    := src
 TESTDIR   := tests
-OBJDIR    := build
 
 # Sources and Object files
-SRCS      := $(wildcard $(SRCDIR)/*.c)
-OBJS      := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-
+SRCS := \
+    dispatcher.c \
+    handle_binary.c \
+    handle_char.c \
+    handle_decimal.c \
+    handle_hexadecimal.c \
+    handle_octal.c \
+    handle_percent.c \
+    handle_pointer.c \
+    handle_reverse.c \
+    handle_rot13.c \
+    handle_string.c \
+    handle_unprintable.c \
+    handle_unsigned.c \
+    parser.c \
+    printf.c \
+    utils.c
+OBJS := $(SRCS:.c=.o)
 TEST_SRC  := $(TESTDIR)/main.c
-TEST_OBJ  := $(OBJDIR)/main.o
+TEST_OBJ  := $(TESTDIR)/main.o
 TARGET  := printf
 
 INCLUDES  := -Iinclude
@@ -26,17 +39,14 @@ $(TARGET): $(OBJS) $(TEST_OBJ)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
 # Produce object files
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(OBJDIR)/main.o: $(TEST_SRC) | $(OBJDIR)
+$(TEST_OBJ): $(TEST_SRC)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Create build directory if needed
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
 clean:
-	rm -rf $(OBJDIR) $(TARGET)
+	rm -rf $(OBJS) $(TEST_OBJ) $(TARGET)
 
 # Debug mode: build with -g and run gdb
 debug: CFLAGS := $(CFLAGS) $(DEBUGFLAGS)
@@ -53,7 +63,7 @@ re: clean all
 
 # Format code with clang-format
 format:
-	clang-format -i src/*.c include/*.h
+	clang-format -i *.c include/*.h
 
 # Show help
 help:
