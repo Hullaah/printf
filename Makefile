@@ -1,6 +1,6 @@
 # Compiler and flags
 CC        := gcc
-CFLAGS    := -Wall -Wextra -Werror -pedantic -std:=gnu11 -O2 -Wno-format
+CFLAGS    := -Wall -Wextra -Werror -pedantic -std=gnu11 -O2 -Wno-format
 DEBUGFLAGS := -g -O0
 
 # Directories
