@@ -3,11 +3,12 @@
 #include <stdarg.h>
 #include <utils.h>
 
-void handle_rot13(struct FormatSpecifier *fs, va_list *args, char *buf,
-		  int *len)
+int handle_rot13(struct FormatSpecifier *fs, va_list *args, char *buf,
+		  int *bufsize)
 {
 	UNUSED(fs);
 	UNUSED(args);
 	UNUSED(buf);
-	UNUSED(len);
+	UNUSED(bufsize);
+	return 0;
 }

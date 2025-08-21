@@ -19,9 +19,9 @@
 bool _isdigit(int c);
 int _atoi(const char **str);
 int _strlen(const char *str);
-void flush(char *buf, int len);
-void write_zero(char *buf, int *len, int count);
-void write_space(char *buf, int *len, int count);
+void flush(char *buf, int *bufsize);
+void write_zero(char *buf, int *bufsize, int count);
+void write_space(char *buf, int *bufsize, int count);
 void reverse(char *buf, int start, int end);
 int unumlen(unsigned long long num, int base);
 unsigned long long get_unum(enum LengthModifier length, va_list *args);

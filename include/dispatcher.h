@@ -5,6 +5,7 @@
 #include <stdarg.h>
 
 format_handler_fn dispatch_handler(char c);
-void dispatch(struct FormatSpecifier *fs, va_list *args, char buf[], int *len);
+int dispatch(struct FormatSpecifier *fs, va_list *args, char buf[],
+	     int *bufsize);
 
 #endif

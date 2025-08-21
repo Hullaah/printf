@@ -1,8 +1,8 @@
 #ifndef HANDLERS_H
 #define HANDLERS_H
 
-#include "format_specifier.h"
 #include <stdarg.h>
+#include "format_specifier.h"
 /**
  * struct FormatHandlerEntry - Associates a format specifier character with its
  * handler function.
@@ -25,17 +25,17 @@ struct FormatHandlerEntry
 	format_handler_fn handler;
 };
 
-void handle_decimal(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_binary(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_octal(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_hexadecimal(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_unsigned(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_pointer(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_string(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_char(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_percent(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_unprintable(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_reverse(struct FormatSpecifier *, va_list *, char[], int *);
-void handle_rot13(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_decimal(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_binary(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_octal(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_hexadecimal(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_unsigned(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_pointer(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_string(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_char(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_percent(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_unprintable(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_reverse(struct FormatSpecifier *, va_list *, char[], int *);
+int handle_rot13(struct FormatSpecifier *, va_list *, char[], int *);
 
 #endif

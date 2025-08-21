@@ -15,16 +15,15 @@ format_handler_fn dispatch_handler(char c)
 {
 	int i;
 	struct FormatHandlerEntry handler_table[] = {
-	    {'d', handle_decimal},     {'i', handle_decimal},
-	    {'b', handle_binary},      {'o', handle_octal},
-	    {'x', handle_hexadecimal}, {'X', handle_hexadecimal},
-	    {'u', handle_unsigned},    {'p', handle_pointer},
-	    {'s', handle_string},      {'c', handle_char},
-	    {'%', handle_percent},     {'S', handle_unprintable},
-	    {'r', handle_reverse},     {'R', handle_rot13},
+		{ 'd', handle_decimal },     { 'i', handle_decimal },
+		{ 'b', handle_binary },	     { 'o', handle_octal },
+		{ 'x', handle_hexadecimal }, { 'X', handle_hexadecimal },
+		{ 'u', handle_unsigned },    { 'p', handle_pointer },
+		{ 's', handle_string },	     { 'c', handle_char },
+		{ '%', handle_percent },     { 'S', handle_unprintable },
+		{ 'r', handle_reverse },     { 'R', handle_rot13 },
 	};
-	for (i = 0; i < 14; i++)
-	{
+	for (i = 0; i < 14; i++) {
 		if (c == handler_table[i].c)
 			return (handler_table[i].handler);
 	}
@@ -38,26 +37,26 @@ format_handler_fn dispatch_handler(char c)
  * and other related information.
  * @args: Pointer to a va_list containing the arguments to be formatted.
  * @buf: Buffer where the formatted output will be stored.
- * @len: Pointer to an integer that keeps track of the current length of the
+ * @bufsize: Pointer to an integer that keeps track of the current length of the
  * buffer.
  */
-void dispatch(struct FormatSpecifier *fs, va_list *args, char buf[], int *len)
+int dispatch(struct FormatSpecifier *fs, va_list *args, char buf[],
+	     int *bufsize)
 {
+	int bytes_written;
 	format_handler_fn handler = dispatch_handler(fs->specifier);
 
 	if (handler)
-	{
-		handler(fs, args, buf, len);
-	}
-	else
-	{
-		if (*len + 2 >= LENGTH)
-		{
-			flush(buf, *len);
-			*len = 0;
+		bytes_written = handler(fs, args, buf, bufsize);
+	else {
+		if (*bufsize + 2 >= LENGTH)
+			flush(buf, bufsize);
+		buf[(*bufsize)++] = '%';
+		bytes_written = 1;
+		if (fs->specifier != '\0') {
+			buf[(*bufsize)++] = fs->specifier;
+			bytes_written++;
 		}
-		buf[(*len)++] = '%';
-		if (fs->specifier != '\0')
-			buf[(*len)++] = fs->specifier;
 	}
+	return bytes_written;
 }

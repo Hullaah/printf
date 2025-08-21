@@ -19,14 +19,7 @@
  * long int).
  * @LEN_L:    'l' length modifier (e.g., for long int or unsigned long int).
  */
-enum LengthModifier
-{
-	LEN_NONE,
-	LEN_HH,
-	LEN_H,
-	LEN_LL,
-	LEN_L
-};
+enum LengthModifier { LEN_NONE, LEN_HH, LEN_H, LEN_LL, LEN_L };
 
 /**
  * struct FormatSpecifier - Represents a parsed format specifier
@@ -47,8 +40,7 @@ enum LengthModifier
  * information to handler functions responsible for producing the formatted
  * output.
  */
-struct FormatSpecifier
-{
+struct FormatSpecifier {
 	unsigned int flags;
 	int width;
 	int precision;
@@ -64,8 +56,8 @@ struct FormatSpecifier
  * @args: Pointer to a va_list containing the variable arguments to be
  *        formatted and printed.
  * @buf:  Buffer where the formatted output will be written.
- * @len:  Pointer to an integer that keeps track of the current length of the
- *        buffer. This value is updated as characters are written to the buffer.
+ * @bufsize:  Pointer to an integer that keeps track of the current length of
+ * the buffer. This value is updated as characters are written to the buffer.
  * Description:
  *   This function pointer type defines the interface for handler functions
  *   responsible for processing specific format specifiers (such as 'd', 's',
@@ -73,7 +65,7 @@ struct FormatSpecifier
  *   parsed format specifier and the argument list, and is expected to produce
  *   the formatted output accordingly.
  */
-typedef void (*format_handler_fn)(struct FormatSpecifier *fs, va_list *args,
-				  char buf[], int *len);
+typedef int (*format_handler_fn)(struct FormatSpecifier *fs, va_list *args,
+				 char buf[], int *bufsize);
 
 #endif

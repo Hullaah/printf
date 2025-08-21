@@ -13,7 +13,7 @@
 int _printf(const char *format, ...)
 {
 
-	int len = 0;
+	int len = 0, bufsize = 0;
 	char buf[LENGTH];
 	va_list args;
 	struct FormatSpecifier fs;
@@ -25,20 +25,18 @@ int _printf(const char *format, ...)
 		{
 			format++;
 			parse_format_specifier(&format, &fs);
-			dispatch(&fs, &args, buf, &len);
+			len += dispatch(&fs, &args, buf, &bufsize);
 		}
 		else
 		{
-			if (len == LENGTH)
-			{
-				flush(buf, len);
-				len = 0;
-			}
-			buf[len++] = *format;
+			if (bufsize == LENGTH)
+				flush(buf, &bufsize);
+			buf[bufsize++] = *format;
 			format++;
+			len++;
 		}
 	}
-	flush(buf, len);
+	flush(buf, &bufsize);
 	va_end(args);
 	return (len);
 }

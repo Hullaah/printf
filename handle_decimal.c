@@ -8,32 +8,31 @@
  * write_ll - Writes an number to the buffer
  * @num: The number to write
  * @buf: Buffer where the number will be written
- * @len: Pointer to an integer that keeps track of the current length of the
+ * @bufsize: Pointer to an integer that keeps track of the current length of the
  * buffer
  *
  * Description: This function writes the digits of the number in
  * to the buffer, flushing it when necessary.
  */
-static void write_ll(long long num, char buf[], int *len)
+static int write_ll(long long num, char buf[], int *bufsize)
 {
-	int start = *len;
+	int start = *bufsize;
 	bool is_ll_min = num == LLONG_MIN;
 
 	if (num < 0)
 		num = is_ll_min ? LLONG_MAX : -num;
 	do
 	{
-		if (*len == LENGTH)
-		{
-			flush(buf, *len);
-			*len = 0;
-		}
-		buf[(*len)] = '0' + ((is_ll_min && *len == start) ? num % 10 + 1
-								  : num % 10);
-		(*len)++;
+		if (*bufsize == LENGTH)
+			flush(buf, bufsize);
+		buf[(*bufsize)] =
+		    '0' + ((is_ll_min && *bufsize == start) ? num % 10 + 1
+							    : num % 10);
+		(*bufsize)++;
 		num /= 10;
 	} while (num > 0);
-	reverse(buf, start, *len - 1);
+	reverse(buf, start, *bufsize - 1);
+	return *bufsize - start;
 }
 
 /**
@@ -58,7 +57,7 @@ static long long get_num(enum LengthModifier length, va_list *args)
 	case LEN_LL:
 		return (long long)va_arg(*args, long long);
 	default:
-		return (long long)va_arg(*args, int);
+		return (long long)(int)va_arg(*args, int);
 	}
 }
 
@@ -89,31 +88,29 @@ static int numlen(long long num)
  * @flags: The flags indicating how to format the sign
  * @is_negative: A boolean indicating if the number is negative
  * @buf: Buffer where the sign will be written
- * @len: Pointer to an integer that keeps track of the current length of the
+ * @bufsize: Pointer to an integer that keeps track of the current length of the
  * buffer
  * Description: This function writes the sign of the number to the buffer
  * based on the flags and whether the number is negative.
  */
-static void write_sign(unsigned flags, bool is_negative, char buf[], int *len)
+static int write_sign(unsigned flags, bool is_negative, char buf[],
+		      int *bufsize)
 {
 	if (is_negative)
 	{
-		if (*len == LENGTH)
-		{
-			flush(buf, *len);
-			*len = 0;
-		}
-		buf[(*len)++] = '-';
+		if (*bufsize == LENGTH)
+			flush(buf, bufsize);
+		buf[(*bufsize)++] = '-';
+		return 1;
 	}
 	else if ((flags & FLAG_PLUS) || (flags & FLAG_SPACE))
 	{
-		if (*len == LENGTH)
-		{
-			flush(buf, *len);
-			*len = 0;
-		}
-		buf[(*len)++] = flags & FLAG_PLUS ? '+' : ' ';
+		if (*bufsize == LENGTH)
+			flush(buf, bufsize);
+		buf[(*bufsize)++] = flags & FLAG_PLUS ? '+' : ' ';
+		return 1;
 	}
+	return 0;
 }
 
 /**
@@ -121,17 +118,18 @@ static void write_sign(unsigned flags, bool is_negative, char buf[], int *len)
  * @fs: Pointer to the FormatSpecifier structure
  * @args: Pointer to the va_list containing the arguments
  * @buf: Buffer where the formatted output will be stored
- * @len: Pointer to an integer that keeps track of the current length of the
+ * @bufsize: Pointer to an integer that keeps track of the current length of the
  * buffer
  * Description: This function retrieves a decimal argument from the va_list and
  * appends it to the buffer, flushing it when necessary.
  */
-void handle_decimal(struct FormatSpecifier *fs, va_list *args, char *buf,
-		    int *len)
+int handle_decimal(struct FormatSpecifier *fs, va_list *args, char *buf,
+		   int *bufsize)
 {
 	long long num = get_num(fs->length, args);
 	int num_len = numlen(num);
 	int zero_padding, space_padding;
+	int bytes_written = 0;
 
 	space_padding = max(fs->width - num_len, 0);
 	zero_padding = 0;
@@ -149,18 +147,20 @@ void handle_decimal(struct FormatSpecifier *fs, va_list *args, char *buf,
 		if (num < 0 || fs->flags & FLAG_SPACE || fs->flags & FLAG_PLUS)
 			space_padding--;
 	}
+	bytes_written += space_padding + zero_padding;
 	if (fs->flags & FLAG_LEFT)
 	{
-		write_sign(fs->flags, num < 0, buf, len);
-		write_zero(buf, len, zero_padding);
-		write_ll(num, buf, len);
-		write_space(buf, len, space_padding);
+		bytes_written += write_sign(fs->flags, num < 0, buf, bufsize);
+		write_zero(buf, bufsize, zero_padding);
+		bytes_written += write_ll(num, buf, bufsize);
+		write_space(buf, bufsize, space_padding);
 	}
 	else
 	{
-		write_space(buf, len, space_padding);
-		write_sign(fs->flags, num < 0, buf, len);
-		write_zero(buf, len, zero_padding);
-		write_ll(num, buf, len);
+		write_space(buf, bufsize, space_padding);
+		bytes_written += write_sign(fs->flags, num < 0, buf, bufsize);
+		write_zero(buf, bufsize, zero_padding);
+		bytes_written += write_ll(num, buf, bufsize);
 	}
+	return bytes_written;
 }

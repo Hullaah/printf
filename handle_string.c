@@ -7,21 +7,18 @@
  * write_string - Writes a string to the buffer
  * @string: The string to write
  * @buf: Buffer where the string will be written
- * @len: Pointer to an integer that keeps track of the current length of the
+ * @bufsize: Pointer to an integer that keeps track of the current length of the
  * buffer
  * @num_written: Number of characters to write from the string
  */
-static void write_string(const char *string, char *buf, int *len,
+static void write_string(const char *string, char *buf, int *bufsize,
 			 int num_written)
 {
 	while (num_written-- > 0)
 	{
-		if (*len == LENGTH)
-		{
-			flush(buf, *len);
-			*len = 0;
-		}
-		buf[(*len)++] = *string++;
+		if (*bufsize == LENGTH)
+			flush(buf, bufsize);
+		buf[(*bufsize)++] = *string++;
 	}
 }
 
@@ -30,14 +27,14 @@ static void write_string(const char *string, char *buf, int *len,
  * @fs: Pointer to the FormatSpecifier structure
  * @args: Pointer to the va_list containing the arguments
  * @buf: Buffer where the formatted output will be stored
- * @len: Pointer to an integer that keeps track of the current length of the
+ * @bufsize: Pointer to an integer that keeps track of the current length of the
  * buffer
  *
  * Description: This function retrieves a string argument from the va_list and
  * appends it to the buffer, flushing it when necessary.
  */
-void handle_string(struct FormatSpecifier *fs, va_list *args, char *buf,
-		   int *len)
+int handle_string(struct FormatSpecifier *fs, va_list *args, char *buf,
+		  int *bufsize)
 {
 	int string_len, num_written, num_pad;
 	char *string = (char *)va_arg(*args, char *);
@@ -52,12 +49,13 @@ void handle_string(struct FormatSpecifier *fs, va_list *args, char *buf,
 	num_pad = max(fs->width - num_written, 0);
 	if (fs->flags & FLAG_LEFT)
 	{
-		write_string(string, buf, len, num_written);
-		write_space(buf, len, num_pad);
+		write_string(string, buf, bufsize, num_written);
+		write_space(buf, bufsize, num_pad);
 	}
 	else
 	{
-		write_space(buf, len, num_pad);
-		write_string(string, buf, len, num_written);
+		write_space(buf, bufsize, num_pad);
+		write_string(string, buf, bufsize, num_written);
 	}
+	return num_written + num_pad;
 }
