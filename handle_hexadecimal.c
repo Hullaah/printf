@@ -22,12 +22,6 @@ static int write_hex(char specifier, unsigned long long num, char buf[],
 	int start = *bufsize;
 	char base_char = (specifier == 'x') ? 'a' : 'A';
 
-	if (num == 0) {
-		if (*bufsize == LENGTH)
-			flush(buf, bufsize);
-		buf[(*bufsize)++] = '0';
-		return 1;
-	}
 	do {
 		if (*bufsize == LENGTH)
 			flush(buf, bufsize);
@@ -77,6 +71,17 @@ int handle_hexadecimal(struct FormatSpecifier *fs, va_list *args, char *buf,
 	int zero_padding, space_padding;
 	int bytes_written = 0;
 
+	if (num == 0 && fs->specifier == 'p') {
+		if (*bufsize + 5 == LENGTH)
+			flush(buf, bufsize);
+		buf[(*bufsize)++] = '(';
+		buf[(*bufsize)++] = 'n';
+		buf[(*bufsize)++] = 'i';
+		buf[(*bufsize)++] = 'l';
+		buf[(*bufsize)++] = ')';
+		return 5;
+	} else if (fs->specifier == 'p')
+		fs->specifier = 'x';
 	space_padding = max(fs->width - num_len -
 				    (fs->flags & FLAG_HASH ? PREFIX_LENGTH : 0),
 			    0);

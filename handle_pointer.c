@@ -17,7 +17,6 @@
 int handle_pointer(struct FormatSpecifier *fs, va_list *args, char *buf,
 		    int *bufsize)
 {
-	fs->specifier = 'x';
 	fs->flags &= ~(FLAG_ZERO | FLAG_PLUS | FLAG_SPACE);
 	fs->precision = -1;
 	fs->flags |= FLAG_HASH;

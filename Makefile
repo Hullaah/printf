@@ -32,7 +32,7 @@ TARGET  := printf
 INCLUDES  := -Iinclude
 
 # Default target
-all: $(TARGET)
+test: $(TARGET)
 
 # Build test executable
 $(TARGET): $(OBJS) $(TEST_OBJ)
@@ -46,13 +46,11 @@ $(TEST_OBJ): $(TEST_SRC)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS) $(TEST_OBJ) $(TARGET)
+	rm -f $(OBJS) $(TEST_OBJ) $(TARGET)
 
 # Debug mode: build with -g and run gdb
 debug: CFLAGS := $(CFLAGS) $(DEBUGFLAGS)
-debug: clean all
-	@echo "Launching gdb on $(TARGET)..."
-	@gdb ./$(TARGET)
+debug: clean test
 
 run: all
 	@./$(TARGET)

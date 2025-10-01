@@ -47,11 +47,11 @@ void flush(char *buf, int *bufsize)
  */
 int _strlen(const char *str)
 {
-	int bufsize = 0;
+	int len = 0;
 
-	while (str[bufsize])
-		bufsize++;
-	return (bufsize);
+	while (str[len])
+		len++;
+	return (len);
 }
 
 /**
@@ -112,12 +112,12 @@ void reverse(char *buf, int start, int end)
  */
 int unumlen(unsigned long long num, int base)
 {
-	int bufsize = 0;
+	int len = 0;
 
 	do {
-		bufsize++;
+		len++;
 	} while ((num /= base) > 0);
-	return bufsize;
+	return len;
 }
 /**
  * get_unum - retrieves an unsigned number from the va_list based on the length
@@ -141,6 +141,7 @@ unsigned long long get_unum(enum LengthModifier size, va_list *args)
 	case LEN_LL:
 		return (unsigned long long)va_arg(*args, unsigned long long);
 	default:
-		return (unsigned long long)va_arg(*args, unsigned int);
+		return (unsigned long long)(unsigned int)va_arg(*args,
+								unsigned int);
 	}
 }
