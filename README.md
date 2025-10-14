@@ -86,16 +86,16 @@ This project was created to:
 git clone https://github.com/Hullaah/printf.git
 cd printf
 ```
-2. Build the project
+2. Build the **static** and **shared** libraries:
 ```bash
 make
 ```
-3. Optionally, generate compile_commands.json for code navigation:
+This produces:
+- `libprintf.a` → static library
+- `libprintf.so` → shared (dynamic) library
+3. Optionally, run the included test program
 ```bash
-bear -- make
-```
-4. Run the Demo
-```bash
+make test
 ./printf
 ```
 
@@ -106,13 +106,6 @@ bear -- make
 - Respecting field width, precision, flags, and length modifiers
 - Debugging tricky issues like signed integer overflow (LLONG_MIN)
 - Writing clean, maintainable low-level C code
-
-## 🏁 Future Work
-- Add support for floating-point formats (%f, %e, %g)
-- Extend support for wide characters (%ls, %lc)
-- Add unit tests for all specifiers
-- Benchmark performance against libc printf
-- Port to kernel-space with printk-like behavior
 
 ## 👨‍💻 Author
 **Umar Adelowo**
